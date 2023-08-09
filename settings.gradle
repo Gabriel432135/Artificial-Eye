@@ -1,0 +1,26 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "Artificial Eye"
+include ':app'
+//include ':opencv'
+include ':opencv'
+
+/*
+def opencvsdk='C:/Users/Gabriel Alves/Downloads/Instaladores e arquivos exe/opencv-4.7.0-android-sdk/OpenCV-android-sdk'
+include ':opencv'
+project(':opencv').projectDir = new File(opencvsdk + '/sdk')
+ */
+
+
