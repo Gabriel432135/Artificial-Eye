@@ -4,7 +4,7 @@ Este é o meu primeiro projeto que utiliza visão computacional e processamento 
 
 ## Descrição
 
-O projeto "Artificial Eye" é uma aplicação Android que utiliza a câmera do dispositivo para detectar rostos em tempo real. A técnica usada é o "haarcascade".
+O projeto "Artificial Eye" é uma aplicação Android que utiliza a câmera do dispositivo para detectar rostos em tempo real. A técnica usada é o "haarcascade"
 
 ## Funcionalidades
 
