@@ -36,7 +36,7 @@ Para utilizar o projeto, é necessário ter o Android Studio instalado. Além di
 
 1. Capacidade de detectar outros objetos.
 2. Capacidade de importar modelos treinados em tempo de execução.
-3. Uso de técnicas mais sofisticadas envolvendo redes neurais no lugar do haarcascade
+3. Uso de técnicas mais sofisticadas envolvendo redes neurais no lugar do haarcascade.
 
 ## Autor
 
