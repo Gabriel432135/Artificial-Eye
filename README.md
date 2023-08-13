@@ -32,6 +32,12 @@ Para utilizar o projeto, é necessário ter o Android Studio instalado. Além di
 1. Certifique-se de ajustar o diretório da biblioteca OpenCV de acordo com a sua configuração. Verifique o método `loadXML()` na classe `MainActivity.java`.
 2. Infelizmente alguns dispositivos são incompatíveis com a implementação atual do CameraX e disparam exception ao tentar vincular o Analyzer ao ciclo de vida da câmera, como o LG K50S. Talvez uma atualização do CameraX resolva isso no futuro.
 
+## Atualizações futuras previstas
+
+1. Capacidade de detectar outros objetos.
+2. Capacidade de importar modelos treinados em tempo de execução.
+3. Uso de técnicas mais sofisticadas envolvendo redes neurais no lugar do haarcascade
+
 ## Autor
 
 Gabriel Alves
