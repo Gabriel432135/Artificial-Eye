@@ -35,6 +35,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.artificialeye.databinding.ActivityMainBinding;
 
+import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
@@ -57,12 +58,14 @@ public class MainActivity extends AppCompatActivity {
     private ExecutorService cameraExecutor;
     private MyOpenCVLoader openCvLoader;
     private CascadeClassifier faceCascade;
+    private OrientationDetector orientationDetector;
     private Paint paint;
     private Size screenSize, imageProxySize;
     private static final String TAG = "CameraXApp";
+    private int orientation;
     private static final int REQUEST_CODE_PERMISSIONS = 10;
     private static final String[] REQUIRED_PERMISSIONS = {
-            Manifest.permission.CAMERA
+            Manifest.permission.CAMERA,
     };
 
     @Override
@@ -81,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
         viewBinding.overlayTexture.setOpaque(false);
 
         paint = new Paint();
+
+        orientationDetector = new OrientationDetector(this).start();
 
         openCvLoader = new MyOpenCVLoader();
 
@@ -186,9 +191,14 @@ public class MainActivity extends AppCompatActivity {
 
         MatOfRect faces = new MatOfRect();
 
-        faceCascade.detectMultiScale(yMat, faces, 1.5, 4, 0 | Objdetect.CASCADE_SCALE_IMAGE, new org.opencv.core.Size(40, 40), new org.opencv.core.Size());
+        orientation = orientationDetector.getBestOrientation();
 
-        drawRects(image, faces.toArray());
+        Mat rotatedMat = getRotatedMat(yMat, orientation);
+
+        faceCascade.detectMultiScale(rotatedMat, faces, 1.5, 4,
+                0 | Objdetect.CASCADE_SCALE_IMAGE, new org.opencv.core.Size(40, 40), new org.opencv.core.Size());
+
+        drawRects(image, resetRectRotation(faces.toArray(), orientation, rotatedMat.size()));
     }
 
     private File loadXML(){
@@ -269,6 +279,57 @@ public class MainActivity extends AppCompatActivity {
         display.getRealSize(size);
 
         return new Size(size.x, size.y);
+    }
+
+    public Mat getRotatedMat(Mat mat, int rotation){
+
+        //Se a posição já está certa, não faça nada
+        if(rotation == OrientationDetector.LANDSCAPE) return mat;
+
+        Mat rotatedMat = new Mat();
+
+        switch (rotation){
+            case OrientationDetector.PORTATIL:
+                Core.rotate(mat, rotatedMat, Core.ROTATE_90_CLOCKWISE);
+                break;
+            case OrientationDetector.PORTATIL_UPSIDE_DOWN:
+                Core.rotate(mat, rotatedMat, Core.ROTATE_90_COUNTERCLOCKWISE);
+                break;
+            case OrientationDetector.LANDSCAPE_UPSIDE_DOWN:
+                Core.rotate(mat, rotatedMat, Core.ROTATE_180);
+                break;
+        }
+        return rotatedMat;
+    }
+
+    //Esse método é usado para ressetar a rotação dos rects gerados pelo processamento com o Mat rotacionado
+    public org.opencv.core.Rect[] resetRectRotation(org.opencv.core.Rect[]rects, int orientation, org.opencv.core.Size matSize){
+        float angleReset = 0;
+        Point pivot = null;
+
+        switch (orientation){
+            case OrientationDetector.PORTATIL:
+                angleReset = 270f;
+                pivot = new Point((int) matSize.width/2, (int) matSize.width/2);
+                break;
+            case OrientationDetector.PORTATIL_UPSIDE_DOWN:
+                angleReset = 90f;
+                pivot = new Point((int) matSize.height/2, (int) matSize.height/2);
+                break;
+            case OrientationDetector.LANDSCAPE_UPSIDE_DOWN:
+                angleReset = 180f;
+                pivot = new Point((int) matSize.width/2, (int) matSize.height/2);
+                break;
+            case OrientationDetector.LANDSCAPE:
+                return rects;
+        }
+        org.opencv.core.Rect rectsRotated[] = new org.opencv.core.Rect[rects.length];
+
+        for(short i = 0; i<rects.length; i++){
+            rectsRotated[i] = RectUtils.getRotatedOpencvRect(rects[i], angleReset, pivot);
+        }
+
+        return rectsRotated;
     }
 
 

@@ -4,11 +4,18 @@
 
 package com.example.artificialeye;
 
+import android.graphics.Matrix;
+import android.graphics.Point;
+import android.graphics.RectF;
 import android.util.Size;
 
 import org.opencv.core.Rect;
 
 public class RectUtils {
+    private RectUtils(){}
+
+    private static Matrix matrix = new Matrix();
+    private static RectF rectF = new RectF();
 
     public static android.graphics.Rect toAndroidRect(Rect openCvRect) {
         return new android.graphics.Rect(
@@ -95,6 +102,20 @@ public class RectUtils {
         short Yoffset = (short) Math.round((float)((b-screen.getHeight())/2));
 
         rect.set(rect.left-Xoffset, rect.top-Yoffset, rect.right-Xoffset, rect.bottom-Yoffset);
+    }
+
+    //Rotaciona o rect em torno de um ponto pivô
+    public static void rotateAndroidRect(android.graphics.Rect rect, float degrees, Point pivot){
+        matrix.setRotate(degrees, pivot.x, pivot.y);
+        rectF.set(rect);
+        matrix.mapRect(rectF);
+        rectF.roundOut(rect);
+    }
+
+    public static Rect getRotatedOpencvRect(Rect rect, float degrees, Point pivot){
+        android.graphics.Rect androidRect = toAndroidRect(rect);
+        rotateAndroidRect(androidRect, degrees, pivot);
+        return toOpenCvRect(androidRect);
     }
 
 
