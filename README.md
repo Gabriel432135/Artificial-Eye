@@ -4,7 +4,9 @@ Este é o meu primeiro projeto que utiliza visão computacional e processamento 
 
 ## Descrição
 
-O projeto "Artificial Eye" é uma aplicação Android que utiliza a câmera do dispositivo para detectar rostos em tempo real. Ele utiliza a biblioteca OpenCV (versão 4.8.0) para realizar a detecção de rostos em imagens capturadas pela câmera.
+O projeto "Artificial Eye" é uma aplicação Android que utiliza a câmera do dispositivo para detectar rostos em tempo real. A técnica usada é o "haarcascade"
+![Imagem do projeto funcionando](https://user-images.githubusercontent.com/118029376/260339263-38ac2a2d-c46e-49cc-97f9-c49742679e21.jpg)
+
 
 ## Funcionalidades
 
@@ -29,7 +31,14 @@ Para utilizar o projeto, é necessário ter o Android Studio instalado. Além di
 
 ## Observações
 
-Certifique-se de ajustar o diretório da biblioteca OpenCV de acordo com a sua configuração. Verifique o método `loadXML()` na classe `MainActivity.java`.
+1. Certifique-se de ajustar o diretório da biblioteca OpenCV de acordo com a sua configuração. Verifique o método `loadXML()` na classe `MainActivity.java`.
+2. Infelizmente alguns dispositivos são incompatíveis com a implementação atual do CameraX e disparam exception ao tentar vincular o Analyzer ao ciclo de vida da câmera, como o LG K50S. Talvez uma atualização do CameraX resolva isso no futuro.
+
+## Atualizações futuras previstas
+
+1. Capacidade de detectar outros objetos.
+2. Capacidade de importar modelos treinados em tempo de execução.
+3. Uso de técnicas mais sofisticadas envolvendo redes neurais no lugar do haarcascade.
 
 ## Autor
 
