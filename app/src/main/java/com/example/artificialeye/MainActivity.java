@@ -291,16 +291,13 @@ public class MainActivity extends AppCompatActivity {
 
         Mat rotatedMat = new Mat();
 
-        switch (rotation){
-            case OrientationDetector.PORTATIL:
-                Core.rotate(mat, rotatedMat, Core.ROTATE_90_CLOCKWISE);
-                break;
-            case OrientationDetector.PORTATIL_UPSIDE_DOWN:
-                Core.rotate(mat, rotatedMat, Core.ROTATE_90_COUNTERCLOCKWISE);
-                break;
-            case OrientationDetector.LANDSCAPE_UPSIDE_DOWN:
-                Core.rotate(mat, rotatedMat, Core.ROTATE_180);
-                break;
+        switch (rotation) {
+            case OrientationDetector.PORTATIL ->
+                    Core.rotate(mat, rotatedMat, Core.ROTATE_90_CLOCKWISE);
+            case OrientationDetector.PORTATIL_UPSIDE_DOWN ->
+                    Core.rotate(mat, rotatedMat, Core.ROTATE_90_COUNTERCLOCKWISE);
+            case OrientationDetector.LANDSCAPE_UPSIDE_DOWN ->
+                    Core.rotate(mat, rotatedMat, Core.ROTATE_180);
         }
         return rotatedMat;
     }
@@ -310,21 +307,22 @@ public class MainActivity extends AppCompatActivity {
         float angleReset = 0;
         Point pivot = null;
 
-        switch (orientation){
-            case OrientationDetector.PORTATIL:
+        switch (orientation) {
+            case OrientationDetector.PORTATIL -> {
                 angleReset = 270f;
-                pivot = new Point((int) matSize.width/2, (int) matSize.width/2);
-                break;
-            case OrientationDetector.PORTATIL_UPSIDE_DOWN:
+                pivot = new Point((int) matSize.width / 2, (int) matSize.width / 2);
+            }
+            case OrientationDetector.PORTATIL_UPSIDE_DOWN -> {
                 angleReset = 90f;
-                pivot = new Point((int) matSize.height/2, (int) matSize.height/2);
-                break;
-            case OrientationDetector.LANDSCAPE_UPSIDE_DOWN:
+                pivot = new Point((int) matSize.height / 2, (int) matSize.height / 2);
+            }
+            case OrientationDetector.LANDSCAPE_UPSIDE_DOWN -> {
                 angleReset = 180f;
-                pivot = new Point((int) matSize.width/2, (int) matSize.height/2);
-                break;
-            case OrientationDetector.LANDSCAPE:
+                pivot = new Point((int) matSize.width / 2, (int) matSize.height / 2);
+            }
+            case OrientationDetector.LANDSCAPE -> {
                 return rects;
+            }
         }
         org.opencv.core.Rect rectsRotated[] = new org.opencv.core.Rect[rects.length];
 
